@@ -43,6 +43,13 @@ class PaletteUtils {
             avgHSV[2] /= size
         }
 
+        // if average is 0 OR list is empty, this means we're at a empty palette (ex.. "_,_,_,_,_,_")
+        // re-run algo with random colors
+        if (hsvList.isEmpty()) {
+            var newColors = Array<Couleur>(6, { i -> Couleur("random${i.toString()}Color") } )
+            return generatePalette(newColors)
+        }
+
         val newColors = Array(6) { Couleur() }
 
         for (i in colors.indices) {
