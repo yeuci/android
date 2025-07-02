@@ -8,4 +8,7 @@ class Palette {
         this.palette = palette
         this.paletteName = paletteName
     }
+
+    fun getPalette() : Array<Couleur> = palette
+    fun getPaletteName() : String = paletteName
 }
