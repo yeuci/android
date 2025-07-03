@@ -4,13 +4,12 @@ import android.graphics.Color
 import kotlin.random.Random
 
 class PaletteUtils {
-    private var S_DELTA = 60
-    private var H_DELTA = 60
-    private var V_DELTA = 60
-
+    private var S_DELTA = 50
+    private var H_DELTA = 45
+    private var V_DELTA = 22
 
     // generate one color palette from an array of colors
-    fun generatePalette(colors: Array<Couleur>): Palette {
+    fun generatePalette(colors: Array<Couleur>, flags : Byte): Palette {
         val hsvList = mutableListOf<FloatArray>()
 
         // cache current hsv, will use later for color generation and saturation computations
@@ -47,7 +46,7 @@ class PaletteUtils {
         // re-run algo with random colors
         if (hsvList.isEmpty()) {
             var newColors = Array<Couleur>(6, { i -> Couleur("random${i.toString()}Color") } )
-            return generatePalette(newColors)
+            return generatePalette(newColors, flags)
         }
 
         val newColors = Array(6) { Couleur() }
@@ -73,13 +72,22 @@ class PaletteUtils {
                 // 2- randomize an increase or decrease to saturation
                 // 3- add/subtract calculated delta to hsv, and clamp
 
-                val delta = Random.nextInt(1, S_DELTA + 1) / 100f
+                val hDelta = Random.nextInt(1, H_DELTA + 1).toFloat()
+                val sDelta = Random.nextInt(1, S_DELTA + 1) / 100f
+                val vDelta = Random.nextInt(1, V_DELTA + 1) / 100f
+
                 val increase = Random.nextBoolean()
 
-                if (increase) {
-                    hsv[1] = (hsv[1] + delta).coerceIn(0f, 1f)
-                } else {
-                    hsv[1] = (hsv[1] - delta).coerceIn(0f, 1f)
+                // check byte flags for each channel
+                // can either take excess or just wrap if over
+                if ((flags.toInt() and (1 shl 0)) != 0) {
+                    hsv[0] = (hsv[0] + if (increase) hDelta else -hDelta + 360f) % 360f
+                }
+                if ((flags.toInt() and (1 shl 1)) != 0) {
+                    hsv[1] = (hsv[1] + if (increase) sDelta else -sDelta).coerceIn(0f, 1f)
+                }
+                if ((flags.toInt() and (1 shl 2)) != 0) {
+                    hsv[2] = (hsv[2] + if (increase) vDelta else -vDelta).coerceIn(0f, 1f)
                 }
 
                 newHSV[0] = hsv[0]
@@ -89,6 +97,7 @@ class PaletteUtils {
                 // come across some empty color ("_")
                 // we've saved previous hsv averages, so we can still generate a color, when not given one
                 // we generate a color by using previous averages and randomly picking a value from each value delta (-, +)
+                // flags aren't used here, since these are random...
                 newHSV[0] = (avgHSV[0] + Random.nextInt(-H_DELTA, H_DELTA + 1)).coerceIn(0f, 360f)
                 newHSV[1] = (avgHSV[1] + Random.nextInt(-S_DELTA, S_DELTA + 1) / 100f).coerceIn(0f, 1f)
                 newHSV[2] = (avgHSV[2] + Random.nextInt(-V_DELTA, V_DELTA + 1) / 100f).coerceIn(0f, 1f)
@@ -111,8 +120,8 @@ class PaletteUtils {
     }
 
     // generate multiple color palette from an array of colors
-    fun generatePalette(colors : Array<Couleur>, palettesToGenerate : Int) : Array<Palette> {
-        var generatedPalettes : Array<Palette> = Array<Palette>(palettesToGenerate, { i -> generatePalette(colors) })
+    fun generatePalettes(colors : Array<Couleur>, flags : Byte, palettesToGenerate : Int) : Array<Palette> {
+        var generatedPalettes : Array<Palette> = Array<Palette>(palettesToGenerate, { i -> generatePalette(colors, flags) })
         return generatedPalettes
     }
 
@@ -159,16 +168,15 @@ class PaletteUtils {
 
     // takes in a ColorStringArray and converts it to a Array<Couleur>
     // [ "(255,0,9)", "black", "green", "_", "_", "_" ] --> [ Couleur(255,0,9), Couleur(black), Couleur(green), Couleur(), Couleur(), Couleur() ]
-    fun paletteStringToCouleurArray(paletteString: String): Array<Couleur> {
-        val colorStrings = paletteStringToColorStringArray(paletteString)
+    fun paletteStringArrayToCouleurArray(paletteStringArray: Array<String>): Array<Couleur> {
+        val result = Array(6) { Couleur() }
 
-        return Array(6) { i ->
-            val s = colorStrings[i]
+        for (i in 0 until minOf(6, paletteStringArray.size)) {
+            val s = paletteStringArray[i].trim()
 
-            when {
-                s == "_" -> {
-                    Couleur()
-                }
+            result[i] = when {
+                s == "_" || s.isEmpty() -> Couleur()
+
                 s.startsWith("(") && s.endsWith(")") -> {
                     val rgbValues = s.drop(1).dropLast(1).split(",").map { it.trim() }
                     if (rgbValues.size >= 3) {
@@ -180,11 +188,11 @@ class PaletteUtils {
                         Couleur()
                     }
                 }
-                else -> {
-                    Couleur(s, s)
-                }
+
+                else -> Couleur(s, s)
             }
         }
-    }
 
+        return result
+    }
 }

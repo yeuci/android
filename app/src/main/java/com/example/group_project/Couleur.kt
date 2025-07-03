@@ -15,8 +15,15 @@ class Couleur {
     }
 
     constructor(colorString: String, colorName: String) {
-        this.color = Color.valueOf(colorString.toColorInt())
         this.colorName = colorName
+        this.color = try {
+            Color.valueOf(colorString.toColorInt())
+        } catch (e: Exception) {
+            val r = Random.nextFloat()
+            val g = Random.nextFloat()
+            val b = Random.nextFloat()
+            Color.valueOf(Color.rgb((r * 255).toInt(), (g * 255).toInt(), (b * 255).toInt()))
+        }
     }
 
     constructor(r: Float, g: Float, b: Float, colorName: String) {
@@ -28,7 +35,6 @@ class Couleur {
         val r = Random.nextInt(0, 256)
         val g = Random.nextInt(0, 256)
         val b = Random.nextInt(0, 256)
-        val a = Random.nextInt(0, 256)
 
         this.color = Color.valueOf(
             r / 255f,
