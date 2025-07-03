@@ -46,10 +46,12 @@ class Tester {
         for ((idx, paletteString) in testPaletteStrings.withIndex()) {
             println("Test case $idx: input = \"$paletteString\"")
 
+            var flags : Byte = 0b00000111
+
             val stringArray = utils.paletteStringToColorStringArray(paletteString)
             Log.w("MainActivity", "String Array: ${stringArray.joinToString(prefix = "[", postfix = "]")}")
 
-            val couleurArray = utils.paletteStringToCouleurArray(paletteString)
+            val couleurArray = utils.paletteStringArrayToCouleurArray(stringArray)
             Log.w("MainActivity", "GENERATING COULEURARRAY")
             couleurArray.forEachIndexed { i, couleur ->
                 val rgbString: String
@@ -71,7 +73,7 @@ class Tester {
                 Log.w("MainActivity", "Currently on $i, Color: $rgbString and Name: $name")
             }
 
-            val palette = utils.generatePalette(couleurArray)
+            val palette = utils.generatePalette(couleurArray, flags)
             val paletteArray = palette.getPalette()
 
             Log.w("MainActivity", "GENERATING PALETTEARRAY")
