@@ -25,6 +25,6 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        tester.test1()
+        tester.test5()
     }
 }

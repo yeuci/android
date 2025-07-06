@@ -6,6 +6,9 @@ import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 
+import java.lang.Integer
+import androidx.core.graphics.toColorInt
+
 
 // When you want to test stuff without affecting MainActivity please call it here and in MainActivity
 //run your test.
@@ -129,6 +132,94 @@ class Tester {
         container.addView(paletteRow)
     }
 
+    // This is test2, hexcode
+    fun test2() {
+        var milk : Couleur = Couleur(132f, 86f, 60f, "Milk")
 
+        Log.w("Tester", "Testing hex code: ${milk.getColorHexCode()}")
+
+        var savedHex: Int = milk.getColorHexCodeInt()
+        var newColor : Color = Color.valueOf(milk.getColorHexCodeInt())
+        Log.w("Tester", "Testing new color is the same as old: ${newColor == milk.getColor()}")
+        Log.w("Tester", "Testing what s color int: ${savedHex}")
+
+
+
+
+    }
+
+    // This is test3, Preferences
+    fun test3() {
+
+        var pref = Preferences(context)
+        pref.addPaletteToFavorites(Palette(arrayOf(Couleur("A"), Couleur("B")), "dog"))
+        pref.addPaletteToFavorites(Palette(arrayOf(Couleur("A"), Couleur("B")), "dog44"))
+        Log.w("Tester", "Testing prefer greet code: ${pref.getFavoritePaletteList().contentToString()}")
+
+
+
+
+
+
+    }
+
+    // This is test4, serializable palette
+    fun test4() {
+        var pref = Preferences(context)
+        pref.addPaletteToFavorites(Palette(arrayOf(Couleur("A"), Couleur("B")), "dog"))
+        pref.addPaletteToFavorites(Palette(arrayOf(Couleur("C"), Couleur("D")), "dog44"))
+
+        var pal = Palette(arrayOf(Couleur("A"), Couleur("B")), "dog")
+        Log.w("Tester", pref.saveFavoriteList().toString())
+    }
+
+    // This is test5, serializable palette
+    fun test5() {
+        var pref = Preferences(context)
+
+        Log.w("Tester", "Before: ${pref.getFavoritePaletteList().contentToString()}")
+
+        pref.addPaletteToFavorites(Palette(arrayOf(Couleur("RED", "RED!"), Couleur("BLUE","BLUE!")), "Fun Colors"))
+//        pref.addPaletteToFavorites(Palette(arrayOf(Couleur("C"), Couleur("D")), "dog44"))
+//
+        Log.w("Tester", "After adding: ${pref.getFavoritePaletteList().contentToString()}")
+//
+//        Log.w("Tester", "Saving: ${pref.saveFavoriteList()}")
+//        pref.emptyFavoriteList()
+//        Log.w("Tester", "Just emptied array, check empty: ${pref.getFavoritePaletteList().isEmpty()}")
+//
+//        pref.addPaletteToFavorites(Palette(arrayOf(Couleur("C"), Couleur("D")), "cat"))
+//        pref.addPaletteToFavorites(Palette(arrayOf(Couleur("E"), Couleur("F")), "bird"))
+//
+//        Log.w("Tester", "Added new palettes: ${pref.getFavoritePaletteList().contentToString()}")
+//        pref.loadFavoritePalette()
+//        Log.w("Tester", "Loaded in favorites: ${pref.getFavoritePaletteList().contentToString()}")
+
+//        Log.w("Tester", pref.loadFavoritePalette())
+    }
+
+    fun test6() {
+        var pref = Preferences(context)
+
+        Log.w("Tester", "Before: ${pref.getSearchHistory().contentToString()}")
+
+        pref.addStringToSearchHistory("black,_,_,_,_")
+//        pref.addPaletteToFavorites(Palette(arrayOf(Couleur("C"), Couleur("D")), "dog44"))
+//
+        Log.w("Tester", "After: ${pref.getSearchHistory().contentToString()}")
+
+        Log.w("Tester", "Saving: ${pref.saveSearchHistory()}")
+        pref.emptySaveHistory()
+        Log.w("Tester", "Just emptied array, check empty: ${pref.getSearchHistory().isEmpty()}")
+
+        pref.addStringToSearchHistory("black,red,_,_,_")
+        pref.addStringToSearchHistory("black,green,blue,purple,_")
+
+        Log.w("Tester", "Added new palettes: ${pref.getSearchHistory().contentToString()}")
+        pref.loadSearchHistory()
+        Log.w("Tester", "Loaded in favorites: ${pref.getSearchHistory().contentToString()}")
+
+//        Log.w("Tester", pref.loadFavoritePalette())
+    }
 
 }
