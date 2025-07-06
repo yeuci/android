@@ -195,4 +195,17 @@ class PaletteUtils {
 
         return result
     }
+
+    fun paletteSaveToPalette(paletteSave : PaletteSave) : Palette {
+        var couleurs : Array<Couleur> = Array<Couleur>(6, { Couleur() })
+
+        for (i in 0 until couleurs.size) {
+            var currentColor = paletteSave.colors[i]
+            couleurs[i] = Couleur(currentColor)
+        }
+
+        var palette = Palette(couleurs, "")
+
+        return palette
+    }
 }

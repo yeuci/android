@@ -1,10 +1,12 @@
 package com.example.group_project
 
+
 import android.content.Context
 import android.graphics.Color
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
+
 
 
 // When you want to test stuff without affecting MainActivity please call it here and in MainActivity
@@ -15,10 +17,13 @@ import android.widget.LinearLayout
 class Tester {
     private lateinit var context: Context
     private lateinit var activity: MainActivity
+    private lateinit var db : Database
 
-    constructor( providedContext : Context) {
+    constructor( providedContext : Context,) {
         context = providedContext
         activity = providedContext as MainActivity
+
+        db = Database()
     }
 
     // This is test #0, basic test to see if everything works
@@ -37,10 +42,10 @@ class Tester {
             "(255,0,0),(0,255,0),(0,0,255),(255,255,0)",
             // biased average
             "_,_,red,_,_",
-            "red,(123,45,67),green,(0,255,0),_,_",
-            "(100,100,100),black,(50,50,50),white,gray,(200,200,200)",
-            // should all be black.... average among these will be 0
-            "_,_,_,_,_,_"
+//            "red,(123,45,67),green,(0,255,0),_,_",
+//            "(100,100,100),black,(50,50,50),white,gray,(200,200,200)",
+//            // should all be black.... average among these will be 0
+//            "brown,white,gray"
         )
 
         for ((idx, paletteString) in testPaletteStrings.withIndex()) {
@@ -89,12 +94,26 @@ class Tester {
                 Log.w("MainActivity", "Generated $i, Color: $rgbString and Name: $name")
             }
 
+            paletteArray.forEachIndexed { i, couleur ->
+                val color = couleur.getColor()
+                val rInt = (color.red() * 255).toInt()
+                val gInt = (color.green() * 255).toInt()
+                val bInt = (color.blue() * 255).toInt()
+                val aInt = (color.alpha() * 255).toInt()
+                val rgbString = "(R:$rInt G:$gInt B:$bInt A:$aInt)"
+                val name = couleur.getName()
+
+                var cc : Int = color.toArgb()
+
+                Log.w("MainActivity", "COLOR CODE: ${cc}")
+            }
+
             displayPalette(palette)
         }
     }
 
     // used for testing, not final
-    private fun displayPalette(palette: Palette) {
+    fun displayPalette(palette: Palette) {
         val container = activity.findViewById<LinearLayout>(R.id.main)
 
         val paletteRow = LinearLayout(context).apply {

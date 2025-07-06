@@ -45,6 +45,16 @@ class Couleur {
         this.colorName = colorName
     }
 
+    constructor(colorInt : Int) {
+        this.color = Color.valueOf(Color.argb(
+            Color.alpha(colorInt),
+            Color.red(colorInt),
+            Color.green(colorInt),
+            Color.blue(colorInt)
+        ))
+        this.colorName = ""
+    }
+
     fun getColor() : Color = this.color
     fun getName() : String = this.colorName
     fun isEmpty() : Boolean = this.emptyColor
