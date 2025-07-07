@@ -17,7 +17,24 @@ class Couleur {
     }
 
     constructor(colorString: String, colorName: String) {
-        this.color = Color.valueOf(colorString.toColorInt())
+        try {
+            this.color = Color.valueOf(colorString.toColorInt())
+        } catch (e : Exception) {
+            val r = Random.nextInt(0, 256)
+            val g = Random.nextInt(0, 256)
+            val b = Random.nextInt(0, 256)
+            val a = Random.nextInt(0, 256)
+
+            this.color = Color.valueOf(
+                r / 255f,
+                g / 255f,
+                b / 255f,
+                1f
+            )
+            this.colorName = colorName
+
+            this.colorHexCodeName = "#" + Integer.toHexString(color.toArgb()).uppercase()
+        }
         this.colorName = colorName
         this.colorHexCodeName = "#" + Integer.toHexString(color.toArgb()).uppercase()
     }
