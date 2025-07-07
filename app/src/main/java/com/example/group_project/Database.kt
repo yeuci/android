@@ -22,7 +22,9 @@ class Database {
 
     suspend fun getAllPalettes(): Array<PaletteSave> {
         return try {
-            val snapshot = paletteCollection.get().await()
+            val snapshot = paletteCollection
+                .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.ASCENDING)
+                .get().await()
             snapshot.toObjects(PaletteSave::class.java).toTypedArray()
         } catch (e: Exception) {
             emptyArray()

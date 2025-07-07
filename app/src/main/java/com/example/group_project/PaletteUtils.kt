@@ -122,6 +122,7 @@ class PaletteUtils {
     // generate multiple color palette from an array of colors
     fun generatePalettes(colors : Array<Couleur>, flags : Byte, palettesToGenerate : Int) : Array<Palette> {
         var generatedPalettes : Array<Palette> = Array<Palette>(palettesToGenerate, { i -> generatePalette(colors, flags) })
+        generatedPalettes.shuffle()
         return generatedPalettes
     }
 
