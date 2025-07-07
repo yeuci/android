@@ -19,18 +19,32 @@
         android:id="@+id/colorSearchView"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="315dp"
+        android:layout_marginTop="275dp"
         android:background="@color/gray"
-        android:fontFamily="sans-serif"
+        android:fontFamily="sans-serif-light"
         android:hint="Add a color"
         android:inputType="text"
         android:textColorHint="@color/light_gray"
         android:textSize="30sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="(i.e. red, green, blue or (255, 255, 255)"
+        android:textStyle="italic"
+        android:layout_marginTop="325dp"
+        android:textColor="@color/light_gray"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Generate!"
+        android:layout_marginTop="375dp"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/gray"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="425dp"
+        android:layout_marginTop="450dp"
         android:text="Number of Palettes: "
         android:textSize="30sp"
         android:textColor="@color/white"/>
@@ -39,7 +53,7 @@
         android:layout_width="40dp"
         android:layout_height="80dp"
         android:layout_marginLeft="300dp"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="435dp"
         android:layout_gravity="center_horizontal"
         android:background="@color/white" />
 </RelativeLayout>
