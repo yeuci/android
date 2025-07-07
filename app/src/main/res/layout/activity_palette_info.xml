@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Palette_info">
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Palette Information"
+        android:gravity="center"
+
+        android:textSize="50sp"
+        android:textColor="@color/black"
+        android:fontFamily="sans-serif-light"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Give Name: "
+        android:gravity="center"
+
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:translationY="140dp"
+        android:fontFamily="sans-serif-light"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload!"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/gray"
+        android:translationY="220dp"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email!"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/gray"
+        android:translationY="300dp"/>/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Favorite!"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/gray"
+        android:translationY="400dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go back!"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/gray"
+        android:translationY="500dp"/>
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        style="?android:attr/ratingBarStyleSmall"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+
+
+        android:translationY="170dp"
+ />
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
