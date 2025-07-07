@@ -1,34 +1,42 @@
 package com.example.group_project
 
-import android.R
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Color
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
+class Preferences private constructor(context: Context) {
 
-class Preferences {
+    companion object {
+        @SuppressLint("StaticFieldLeak")
+        @Volatile private var INSTANCE: Preferences? = null
 
-    private lateinit var context: Context
+        fun initialize(context: Context) {
+            INSTANCE = Preferences(context.applicationContext)
+        }
 
-    // Search history & favorite list are initially empty
-    private var searchHistory : Array<String> = emptyArray()
-    private var favoriteList : Array<Palette> = emptyArray()
-
-
-    constructor(context : Context) {
-        this.context = context
+        fun getInstance(): Preferences {
+            return INSTANCE ?: throw IllegalStateException("Preferences must be initialized first.")
+        }
     }
 
+    private val context: Context = context.applicationContext
+
+    // Stateful data
+    private var searchHistory: Array<String> = emptyArray()
+    private var favoriteList: Array<Palette> = emptyArray()
+
+
+
     // Return favorite list
-    fun getFavoritePaletteList() : Array<Palette> {
+    fun getFavoritePaletteList(): Array<Palette> {
         return favoriteList
     }
 
     // Return search history
-    fun getSearchHistory() : Array<String> {
+    fun getSearchHistory(): Array<String> {
         return searchHistory
     }
 
@@ -48,125 +56,99 @@ class Preferences {
     }
 
     // Add a palette string search to search history
-    fun addStringToSearchHistory( str : String) {
+    fun addStringToSearchHistory(str: String) {
         searchHistory += str
     }
 
     // Save the favorite list as a JSON string as persistent local data
-    fun saveFavoriteList() : String {
-        var root : JSONArray = JSONArray()
+    fun saveFavoriteList(): String {
+        val root = JSONArray()
+        favoriteList.forEach { root.put(getPaletteJSON(it)) }
 
-        // For each palette in the list turn it into a JSONObject
-        for(palette in favoriteList) {
-            root.put(getPaletteJSON(palette))
-        }
-
-        // Try to save it as persistent data
-        try {
-            var pref : SharedPreferences =
-                context.getSharedPreferences( context.packageName, Context.MODE_PRIVATE )
-
-            var editor : SharedPreferences.Editor = pref.edit()
-            editor.putString( "FAVORITES", root.toString())
-
-            editor.commit()
-
-            return root.toString()
-        }
-        catch (e : Exception) {
-            return "false"
+        return try {
+            val pref: SharedPreferences = context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
+            pref.edit().putString("FAVORITES", root.toString()).apply()
+            root.toString()
+        } catch (e: Exception) {
+            "false"
         }
     }
 
     // Add any saved palettes to the current favorite list
-    fun loadFavoritePalette() : String {
+    fun loadFavoritePalette(): String {
+        val pref: SharedPreferences = context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
+        val lst: String? = pref.getString("FAVORITES", "")
 
-        // Grab the array of palettes that are saved
-        var pref : SharedPreferences =
-            context.getSharedPreferences( context.packageName, Context.MODE_PRIVATE )
+        if (lst.isNullOrEmpty()) return favoriteList.contentToString()
 
-        var lst : String? = pref.getString("FAVORITES", "")
-        var lstAsJSONArray : JSONArray = JSONArray(lst!!)
+        try {
+            val lstAsJSONArray = JSONArray(lst)
+            val loadedList = mutableListOf<Palette>()
 
-        // For each palette in the array, re-create the palette with its color and add it to the favorite list
-        for (i in 0..lstAsJSONArray.length() - 1) {
-            lateinit var palette: Palette
-            lateinit var color : Color
+            for (i in 0 until lstAsJSONArray.length()) {
+                val paletteObj = lstAsJSONArray.getJSONObject(i)
+                val paletteName = paletteObj.keys().next()
+                val palette = Palette(emptyArray(), paletteName)
 
-            var palleteJSONObj =lstAsJSONArray.getJSONObject(i)
-            var paletteName =  palleteJSONObj.keys().next()
-            palette = Palette(emptyArray(), palleteJSONObj.keys().next())
-
-            var colorsJSONArray  = palleteJSONObj.getJSONArray(paletteName)
-
-            for (x in 0..colorsJSONArray.length() - 1) {
-                var colorInfo : JSONObject = colorsJSONArray.getJSONObject(x)
-                var color : Couleur = Couleur(colorInfo.getString("color"), colorInfo.getString("name"))
-
-                palette.addCouleurToPalette(color)
+                val colorsJSONArray = paletteObj.getJSONArray(paletteName)
+                for (x in 0 until colorsJSONArray.length()) {
+                    val colorInfo = colorsJSONArray.getJSONObject(x)
+                    val color = Couleur(colorInfo.getString("color"), colorInfo.getString("name"))
+                    palette.addCouleurToPalette(color)
+                }
+                loadedList.add(palette)
             }
-
-            favoriteList += palette
-
+            favoriteList = loadedList.toTypedArray()
+        } catch (e: JSONException) {
+            e.printStackTrace()
         }
-
         return favoriteList.contentToString()
     }
 
-
     // Given a palette turn into a JSONObject
-    fun getPaletteJSON( palette : Palette) : JSONObject {
-        val paletteArr = palette.getPalette()
-        var paletteInfo : JSONObject = JSONObject()
+    private fun getPaletteJSON(palette: Palette): JSONObject {
+        val paletteInfo = JSONObject()
+        val colorInfo = JSONArray()
 
-        var colorInfo : JSONArray = JSONArray()
-        for (c in 0..paletteArr.size - 1) {
-            var color : JSONObject = JSONObject()
-
-            color.put("name", paletteArr[c].getName())
-            color.put("color", paletteArr[c].getColorHexCode())
-            colorInfo.put(color)
+        palette.getPalette().forEach { color ->
+            JSONObject().apply {
+                put("name", color.getName())
+                put("color", color.getColorHexCode())
+            }.also { colorInfo.put(it) }
         }
-
         paletteInfo.put(palette.getPaletteName(), colorInfo)
-
         return paletteInfo
-
     }
 
-    // Add any saved string search to the current search history
-    fun saveSearchHistory() : String {
-        var root : JSONArray = JSONArray(searchHistory)
+    // Save search history
+    fun saveSearchHistory(): String {
+        val root = JSONArray(searchHistory)
+        return try {
+            val pref: SharedPreferences = context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
+            pref.edit().putString("SEARCH_HISTORY", root.toString()).apply()
+            root.toString()
+        } catch (e: Exception) {
+            "false"
+        }
+    }
+
+    // Load search history
+    fun loadSearchHistory(): String {
+        val pref: SharedPreferences = context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
+        val lst: String? = pref.getString("SEARCH_HISTORY", "")
+
+        if (lst.isNullOrEmpty()) return searchHistory.contentToString()
 
         try {
-            var pref : SharedPreferences =
-                context.getSharedPreferences( context.packageName, Context.MODE_PRIVATE )
-
-            var editor : SharedPreferences.Editor = pref.edit()
-            editor.putString( "SEARCH_HISTORY", root.toString())
-
-            editor.commit()
-
-            return root.toString()
+            val lstAsJSONArray = JSONArray(lst)
+            val loadedHistory = mutableListOf<String>()
+            for (i in 0 until lstAsJSONArray.length()) {
+                loadedHistory.add(lstAsJSONArray.getString(i))
+            }
+            searchHistory = loadedHistory.toTypedArray()
+        } catch (e: JSONException) {
+            e.printStackTrace()
         }
-        catch (e : Exception) {
-            return "false"
-        }
-    }
-
-    // Load any saved string searches to the current search history
-    fun loadSearchHistory() : String {
-        var pref : SharedPreferences =
-            context.getSharedPreferences( context.packageName, Context.MODE_PRIVATE )
-
-        var lst : String? = pref.getString("SEARCH_HISTORY", "")
-        var lstAsJSONArray : JSONArray = JSONArray(lst!!)
-
-        for (i in 0..lstAsJSONArray.length() - 1) {
-            searchHistory += lstAsJSONArray.getString(i)
-        }
-
         return searchHistory.contentToString()
     }
-
 }

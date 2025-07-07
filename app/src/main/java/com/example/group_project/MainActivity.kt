@@ -20,9 +20,8 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     lateinit var generateButton : Button
-    lateinit var suggestedButton : Button
-    lateinit var recentButton : Button
-
+    lateinit var favoritedButton : Button
+    lateinit var uploadedButton : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,14 +34,16 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        Preferences.initialize(this)
+
         generateButton = findViewById<Button>(R.id.generatePaletteButton)
-        suggestedButton = findViewById<Button>(R.id.suggestedPalettesButton)
-        recentButton = findViewById<Button>(R.id.viewRecentButton)
+        favoritedButton = findViewById<Button>(R.id.favoritePaletteButton)
+        uploadedButton = findViewById<Button>(R.id.uploadedPaletteButton)
 
 
         generateButton.setOnClickListener{ generatePalettePage() }
-        suggestedButton.setOnClickListener{ suggestedPalettePage() }
-        recentButton.setOnClickListener{ recentPage() }
+        favoritedButton.setOnClickListener{ favoritedPalettePage() }
+        uploadedButton.setOnClickListener{ uploadedPalettePage() }
 
     }
 
@@ -51,18 +52,21 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun suggestedPalettePage() {
-        var intent : Intent = Intent(this, GenerateController::class.java)
+    fun favoritedPalettePage() {
+        var intent : Intent = Intent(this, Favorite::class.java)
         startActivity(intent)
     }
 
-    fun recentPage() {
+    fun uploadedPalettePage() {
         var intent : Intent = Intent(this, GenerateController::class.java)
         startActivity(intent)
     }
 
     companion object {
         lateinit var palettes : Array<Palette>
+
+        //Local saving class
+
     }
 
 

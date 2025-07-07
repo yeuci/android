@@ -21,6 +21,11 @@ class GenerateController : AppCompatActivity() {
 //    lateinit var numberOfPalettesInput : NumberPicker
     lateinit var numberOfPalettesInput : EditText
 
+    //Go back button
+
+    lateinit var goBackButton : Button
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +41,10 @@ class GenerateController : AppCompatActivity() {
         colorInput = findViewById(R.id.colorSearchView)
         generateButton = findViewById(R.id.generateButton)
         numberOfPalettesInput = findViewById(R.id.numberPicker)
+
+        goBackButton = findViewById<Button>(R.id.searchBackButton)
+        goBackButton.setOnClickListener { finish() }
+
 
         generateButton.setOnClickListener{ generatePalette() }
     }
@@ -53,6 +62,10 @@ class GenerateController : AppCompatActivity() {
 
         Log.w("MainActivity", input)
         Log.w("MainActivity", n.toString())
+
+        //Save input to search history
+        var prefer =Preferences.getInstance()
+        prefer.addStringToSearchHistory(input)
 
         var palettes = utils.generatePalettes(couleurArray, flags, n)
 

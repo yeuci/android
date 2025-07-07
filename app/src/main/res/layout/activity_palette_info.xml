@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/palette_info_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Palette_info">
@@ -10,6 +10,7 @@
 
 
     <TextView
+        android:id="@+id/paletteInfoTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Palette Information"
@@ -23,51 +24,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         />
 
+
+
     <TextView
+        android:id="@+id/nameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Give Name: "
         android:gravity="center"
 
-        android:textSize="20sp"
+        android:textSize="26sp"
         android:textColor="@color/black"
-        android:translationY="140dp"
+
         android:fontFamily="sans-serif-light"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-
+        app:layout_constraintStart_toStartOf="@id/paletteInfoTextView"
+        app:layout_constraintTop_toBottomOf="@id/paletteInfoTextView"
         />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Upload!"
-        android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/gray"
-        android:translationY="220dp"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Email!"
-        android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/gray"
-        android:translationY="300dp"/>/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Favorite!"
-        android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/gray"
-        android:translationY="400dp"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go back!"
-        android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/gray"
-        android:translationY="500dp"/>
 
     <RatingBar
         android:id="@+id/ratingBar"
@@ -76,11 +48,70 @@
 
         style="?android:attr/ratingBarStyleSmall"
 
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="@id/nameTextView"
+        app:layout_constraintTop_toBottomOf="@id/nameTextView"
+        />
+
+    <EditText
+        android:layout_width="140sp"
+        android:layout_height="50sp"
+
+        app:layout_constraintStart_toEndOf="@id/nameTextView"
+        app:layout_constraintBottom_toBottomOf="@id/nameTextView"
+        />
+
+    <Button
+        android:id="@+id/uploadButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload!"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/gray"
+
+        app:layout_constraintStart_toStartOf="@id/nameTextView"
+        app:layout_constraintBottom_toBottomOf="@id/nameTextView"
+
+        android:translationY="80dp"/>
+
+    <Button
+        android:id="@+id/favoriteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Favorite!"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/gray"
+
+        app:layout_constraintStart_toEndOf="@id/uploadButton"
+        app:layout_constraintBottom_toBottomOf="@id/nameTextView"
+
+        android:translationY="80dp"/>
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go back!"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/gray"
+
+        app:layout_constraintStart_toEndOf="@id/favoriteButton"
+        app:layout_constraintBottom_toBottomOf="@id/nameTextView"
+
+        android:translationY="80dp"/>
+
+    <LinearLayout
+        android:id="@+id/colorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="200dp"
+        />
 
 
-        android:translationY="170dp"
- />
 
 
 

@@ -173,7 +173,7 @@ class Tester {
     // This is test3, Preferences
     fun test3() {
 
-        var pref = Preferences(context)
+        var pref = Preferences.getInstance()
         pref.addPaletteToFavorites(Palette(arrayOf(Couleur("A"), Couleur("B")), "dog"))
         pref.addPaletteToFavorites(Palette(arrayOf(Couleur("A"), Couleur("B")), "dog44"))
         Log.w("Tester", "Testing prefer greet code: ${pref.getFavoritePaletteList().contentToString()}")
@@ -187,24 +187,24 @@ class Tester {
 
     // This is test4, serializable palette
     fun test4() {
-        var pref = Preferences(context)
-        pref.addPaletteToFavorites(Palette(arrayOf(Couleur("A"), Couleur("B")), "dog"))
-        pref.addPaletteToFavorites(Palette(arrayOf(Couleur("C"), Couleur("D")), "dog44"))
-
-        var pal = Palette(arrayOf(Couleur("A"), Couleur("B")), "dog")
-        Log.w("Tester", pref.saveFavoriteList().toString())
+//        var pref = Preferences()
+//        pref.addPaletteToFavorites(Palette(arrayOf(Couleur("A"), Couleur("B")), "dog"))
+//        pref.addPaletteToFavorites(Palette(arrayOf(Couleur("C"), Couleur("D")), "dog44"))
+//
+//        var pal = Palette(arrayOf(Couleur("A"), Couleur("B")), "dog")
+//        Log.w("Tester", pref.saveFavoriteList(context).toString())
     }
 
     // This is test5, serializable palette
     fun test5() {
-        var pref = Preferences(context)
-
-        Log.w("Tester", "Before: ${pref.getFavoritePaletteList().contentToString()}")
-
-        pref.addPaletteToFavorites(Palette(arrayOf(Couleur("RED", "RED!"), Couleur("BLUE","BLUE!")), "Fun Colors"))
-//        pref.addPaletteToFavorites(Palette(arrayOf(Couleur("C"), Couleur("D")), "dog44"))
+//        var pref = Preferences()
 //
-        Log.w("Tester", "After adding: ${pref.getFavoritePaletteList().contentToString()}")
+//        Log.w("Tester", "Before: ${pref.getFavoritePaletteList().contentToString()}")
+//
+//        pref.addPaletteToFavorites(Palette(arrayOf(Couleur("RED", "RED!"), Couleur("BLUE","BLUE!")), "Fun Colors"))
+////        pref.addPaletteToFavorites(Palette(arrayOf(Couleur("C"), Couleur("D")), "dog44"))
+////
+//        Log.w("Tester", "After adding: ${pref.getFavoritePaletteList().contentToString()}")
 //
 //        Log.w("Tester", "Saving: ${pref.saveFavoriteList()}")
 //        pref.emptyFavoriteList()
@@ -221,25 +221,25 @@ class Tester {
     }
 
     fun test6() {
-        var pref = Preferences(context)
-
-        Log.w("Tester", "Before: ${pref.getSearchHistory().contentToString()}")
-
-        pref.addStringToSearchHistory("black,_,_,_,_")
-//        pref.addPaletteToFavorites(Palette(arrayOf(Couleur("C"), Couleur("D")), "dog44"))
+//        var pref = Preferences()
 //
-        Log.w("Tester", "After: ${pref.getSearchHistory().contentToString()}")
-
-        Log.w("Tester", "Saving: ${pref.saveSearchHistory()}")
-        pref.emptySaveHistory()
-        Log.w("Tester", "Just emptied array, check empty: ${pref.getSearchHistory().isEmpty()}")
-
-        pref.addStringToSearchHistory("black,red,_,_,_")
-        pref.addStringToSearchHistory("black,green,blue,purple,_")
-
-        Log.w("Tester", "Added new palettes: ${pref.getSearchHistory().contentToString()}")
-        pref.loadSearchHistory()
-        Log.w("Tester", "Loaded in favorites: ${pref.getSearchHistory().contentToString()}")
+//        Log.w("Tester", "Before: ${pref.getSearchHistory().contentToString()}")
+//
+//        pref.addStringToSearchHistory("black,_,_,_,_")
+////        pref.addPaletteToFavorites(Palette(arrayOf(Couleur("C"), Couleur("D")), "dog44"))
+////
+//        Log.w("Tester", "After: ${pref.getSearchHistory().contentToString()}")
+//
+//        Log.w("Tester", "Saving: ${pref.saveSearchHistory(context)}")
+//        pref.emptySaveHistory()
+//        Log.w("Tester", "Just emptied array, check empty: ${pref.getSearchHistory().isEmpty()}")
+//
+//        pref.addStringToSearchHistory("black,red,_,_,_")
+//        pref.addStringToSearchHistory("black,green,blue,purple,_")
+//
+//        Log.w("Tester", "Added new palettes: ${pref.getSearchHistory().contentToString()}")
+//        pref.loadSearchHistory(context)
+//        Log.w("Tester", "Loaded in favorites: ${pref.getSearchHistory().contentToString()}")
 
 //        Log.w("Tester", pref.loadFavoritePalette())
     }

@@ -8,6 +8,7 @@
     tools:context=".Favorite">
 
     <TextView
+        android:id="@+id/favoriteTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Favorites"
@@ -20,13 +21,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         />
 
+    <LinearLayout
+        android:id="@+id/favoriteColorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="100dp"
+
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/favoriteTextView"
+        />
+
     <Button
+        android:id="@+id/favoriteBackButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Go back!"
         android:layout_marginTop="375dp"
         android:layout_centerHorizontal="true"
         android:backgroundTint="@color/gray"
-        android:translationY="500dp"/>
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
