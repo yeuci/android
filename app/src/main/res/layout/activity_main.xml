@@ -1,13 +1,97 @@
-<!-- res/layout/activity_main.xml -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scrollView"
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Root layout for the main activity, using a LinearLayout for vertical arrangement -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#000000"
+    android:padding="16dp"
+    tools:context=".MainActivity">
 
-    <LinearLayout
-        android:id="@+id/main"
+    <!-- Black background for the entire screen -->
+
+    <!-- Welcome Message TextView -->
+    <TextView
+        android:id="@+id/welcomeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome to Color Palette App!"
+        android:textColor="#FFFFFF"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="48dp"
+        android:fontFamily="sans-serif-medium" />
+    <!-- White text color for welcome message -->
+
+    <!-- Description TextView -->
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Discover, generate, and manage beautiful color palettes for your projects."
+        android:textColor="#CCCCCC"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_marginBottom="64dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp" />
+    <!-- Lighter white/gray for description -->
+
+    <!-- Button for "Generate Palette" -->
+    <Button
+        android:id="@+id/generatePaletteButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp" />
-</ScrollView>
+        android:text="Generate Palette"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#1A1A1A"
+        android:textSize="20sp"
+        android:padding="16dp"
+        android:layout_marginBottom="24dp"
+        android:elevation="8dp"
+        android:stateListAnimator="@null"
+        app:cornerRadius="12dp" />
+    <!-- White text color for button -->
+    <!-- Dark black/gray background for button -->
+    <!-- Rounded corners for the button -->
+
+    <!-- Button for "Suggested Palettes" -->
+    <Button
+        android:id="@+id/suggestedPalettesButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Suggested Palettes"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#1A1A1A"
+        android:textSize="20sp"
+        android:padding="16dp"
+        android:layout_marginBottom="24dp"
+        android:elevation="8dp"
+        android:stateListAnimator="@null"
+        app:cornerRadius="12dp" />
+    <!-- White text color for button -->
+    <!-- Dark black/gray background for button -->
+    <!-- Rounded corners for the button -->
+
+    <!-- Button for "View Recent" -->
+    <Button
+        android:id="@+id/viewRecentButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View Recent"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#1A1A1A"
+        android:textSize="20sp"
+        android:padding="16dp"
+        android:elevation="8dp"
+        android:stateListAnimator="@null"
+        app:cornerRadius="12dp" />
+    <!-- White text color for button -->
+    <!-- Dark black/gray background for button -->
+    <!-- Rounded corners for the button -->
+
+</LinearLayout>
