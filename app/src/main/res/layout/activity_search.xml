@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/black">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Generate your own palette"
+        android:gravity="center"
+        android:layout_marginTop="100dp"
+        android:textSize="50sp"
+        android:textColor="@color/white"
+        android:fontFamily="sans-serif-light"/>
+    <AutoCompleteTextView
+        android:id="@+id/colorSearchView"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="315dp"
+        android:background="@color/gray"
+        android:fontFamily="sans-serif"
+        android:hint="Add a color"
+        android:inputType="text"
+        android:textColorHint="@color/light_gray"
+        android:textSize="30sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="425dp"
+        android:text="Number of Palettes: "
+        android:textSize="30sp"
+        android:textColor="@color/white"/>
+    <NumberPicker
+        android:id="@+id/numberPicker"
+        android:layout_width="40dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="300dp"
+        android:layout_marginTop="400dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/white" />
+</RelativeLayout>
