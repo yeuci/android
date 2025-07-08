@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import android.util.Log
 
 class Preferences private constructor(context: Context) {
 
@@ -63,12 +64,18 @@ class Preferences private constructor(context: Context) {
     // Save the favorite list as a JSON string as persistent local data
     fun saveFavoriteList(): String {
         val root = JSONArray()
-        favoriteList.forEach { root.put(getPaletteJSON(it)) }
+        for(palette in favoriteList) {
+            root.put(getPaletteJSON(palette))
+        }
 
         return try {
             val pref: SharedPreferences = context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
-            pref.edit().putString("FAVORITES", root.toString()).apply()
-            root.toString()
+            var editor : SharedPreferences.Editor = pref.edit()
+            editor.putString( "FAVORITES", root.toString())
+
+            editor.commit()
+            Log.w("Gen", root.toString())
+            return root.toString()
         } catch (e: Exception) {
             "false"
         }
@@ -99,6 +106,7 @@ class Preferences private constructor(context: Context) {
                 loadedList.add(palette)
             }
             favoriteList = loadedList.toTypedArray()
+
         } catch (e: JSONException) {
             e.printStackTrace()
         }

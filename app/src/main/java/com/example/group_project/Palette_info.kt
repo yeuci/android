@@ -1,29 +1,32 @@
 package com.example.group_project
 
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.net.toUri
 
 class Palette_info : AppCompatActivity() {
     var palette : Palette = GeneratedPalettesController.chosenPalette
     lateinit var goBackButton : Button
     lateinit var favoriteButton : Button
     lateinit var uploadButton : Button
+    lateinit var emailButton : Button
+
+    lateinit var emailText : EditText
 
     var alreadyFavorited : Boolean= false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-
-
-
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_palette_info)
@@ -33,13 +36,22 @@ class Palette_info : AppCompatActivity() {
 //            insets
 //        }
 
+        alreadyFavorited = false
+
         displayPalette(palette)
 
         goBackButton = findViewById<Button>(R.id.backButton)
         favoriteButton = findViewById<Button>(R.id.favoriteButton)
+        emailButton = findViewById<Button>(R.id.emailButton)
 
+        //Go back
         goBackButton.setOnClickListener { finish() }
+
+        //Update favorite list
         favoriteButton.setOnClickListener { addToFavoties() }
+
+        emailText = findViewById<EditText>(R.id.emailEditText)
+        emailButton.setOnClickListener { sendEmail() }
 
         Log.w("Gen", "Checking to see if right${palette}")
     }
@@ -84,10 +96,51 @@ class Palette_info : AppCompatActivity() {
 
     fun addToFavoties() {
         if (!alreadyFavorited) {
-            var prefer =Preferences.getInstance()
+
+
+            var prefer = Preferences.getInstance()
+            prefer.loadFavoritePalette()
+            palette.setPaletteName(emailText.text.toString())
             prefer.addPaletteToFavorites(palette)
             prefer.saveFavoriteList()
+            alreadyFavorited = true
+
+            Log.w("Gen", "Added palette")
         }
+    }
+
+    fun sendEmail() {
+
+        val recipient : String = emailText.text.toString()
+        val subject = "Palette Hexcode"
+        val body = palette.toString()
+
+        Log.w("Gen", "Enter email and body is $body")
+
+        val mailtoUri = ("mailto:${Uri.encode(recipient)}" +
+                "?subject=${Uri.encode(subject)}" +
+                "&body=${Uri.encode(body)}").toUri()
+
+        val intent = Intent(Intent.ACTION_SENDTO, mailtoUri).apply {
+            // Add extras as backup (some clients may prefer these)
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(recipient))
+            putExtra(Intent.EXTRA_SUBJECT, subject)
+            putExtra(Intent.EXTRA_TEXT, body)
+        }
+
+        try {
+            startActivity(Intent.createChooser(intent, "Send email using..."))
+            emailText.text.clear()
+            Log.w("Gen", "Email intent launched")
+
+        } catch (e: Exception) {
+
+        }
+//        if (intent.resolveActivity(packageManager) != null) {
+//            startActivity(intent)
+//            Log.w("Gen", "Sent $body")
+//            emailText.setText("")
+//        }
     }
 
 }

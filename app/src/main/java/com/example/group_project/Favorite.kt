@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import android.util.Log
 
 class Favorite : AppCompatActivity() {
     lateinit var goBackButton : Button
@@ -24,18 +25,26 @@ class Favorite : AppCompatActivity() {
             insets
         }
 
-        prefer.loadFavoritePalette()
-        var paletteList : Array<Palette> = prefer.getFavoritePaletteList()
         goBackButton = findViewById<Button>(R.id.favoriteBackButton)
 
         goBackButton.setOnClickListener { finish() }
 
+
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        prefer.loadFavoritePalette()
+        var paletteList : Array<Palette> = prefer.getFavoritePaletteList()
+        Log.w("Gen", paletteList.size.toString())
         for (palette in paletteList) {
             displayPalette(palette)
         }
 
+        Log.w("Gen", "Was called!!")
     }
-
 
     fun displayPalette(palette: Palette) {
         val container = findViewById<LinearLayout>(R.id.favoriteColorLayout)
