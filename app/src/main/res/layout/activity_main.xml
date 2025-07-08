@@ -62,10 +62,10 @@
 
     <!-- Button for "Suggested Palettes" -->
     <Button
-        android:id="@+id/suggestedPalettesButton"
+        android:id="@+id/favoritePaletteButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Suggested Palettes"
+        android:text="Favorite Palettes"
         android:textColor="#FFFFFF"
         android:backgroundTint="#1A1A1A"
         android:textSize="20sp"
@@ -80,10 +80,10 @@
 
     <!-- Button for "View Recent" -->
     <Button
-        android:id="@+id/viewRecentButton"
+        android:id="@+id/uploadedPaletteButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="View Recent"
+        android:text="Uploaded Palettes"
         android:textColor="#FFFFFF"
         android:backgroundTint="#1A1A1A"
         android:textSize="20sp"

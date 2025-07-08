@@ -13,6 +13,8 @@ class Palette {
     fun getPalette() : Array<Couleur> = palette
     fun getPaletteName() : String = paletteName
 
+    fun setPaletteName(name : String) {this.paletteName = name}
+
     fun addCouleurToPalette( couleur : Couleur) {
         palette += couleur
     }

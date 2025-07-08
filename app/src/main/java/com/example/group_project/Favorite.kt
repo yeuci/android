@@ -1,9 +1,7 @@
 package com.example.group_project
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
@@ -11,38 +9,46 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import android.util.Log
 
-
-class GeneratedPalettesController : AppCompatActivity() {
+class Favorite : AppCompatActivity() {
     lateinit var goBackButton : Button
-
-
-    companion object {
-        lateinit var chosenPalette : Palette
-    }
+    var prefer : Preferences = Preferences.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.generated_palettes)
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.palettes_main)) { v, insets ->
+        setContentView(R.layout.activity_favorite)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        goBackButton = findViewById<Button>(R.id.genBackButton)
+        goBackButton = findViewById<Button>(R.id.favoriteBackButton)
+
         goBackButton.setOnClickListener { finish() }
 
-        // get all palettes and display
-        for (palette in MainActivity.palettes) {
+
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        prefer.loadFavoritePalette()
+        var paletteList : Array<Palette> = prefer.getFavoritePaletteList()
+        Log.w("Gen", paletteList.size.toString())
+        for (palette in paletteList) {
             displayPalette(palette)
         }
+
+        Log.w("Gen", "Was called!!")
     }
 
     fun displayPalette(palette: Palette) {
-        val container = findViewById<LinearLayout>(R.id.palettes_main)
+        val container = findViewById<LinearLayout>(R.id.favoriteColorLayout)
+
 
         val paletteRow = LinearLayout(this).apply {
             layoutParams = LinearLayout.LayoutParams(
@@ -50,7 +56,6 @@ class GeneratedPalettesController : AppCompatActivity() {
                 300
             ).apply {
                 setMargins(0, 0, 0, 20)
-                setOnClickListener { goToPalleteInfoPage(palette) }
             }
             orientation = LinearLayout.HORIZONTAL
         }
@@ -78,23 +83,4 @@ class GeneratedPalettesController : AppCompatActivity() {
 
         container.addView(paletteRow)
     }
-
-    fun goToPalleteInfoPage(palette: Palette) {
-        chosenPalette = palette
-
-        Log.w("Gen", "$palette and check chosen $chosenPalette");
-        var intent : Intent = Intent(this, Palette_info::class.java)
-        startActivity(intent)
-    }
-
-//    inner class LinearLayoutPalette : LinearLayout {
-//        lateinit var myPalette : Palette
-//
-//        constructor(context: AppCompatActivity, palette: Palette) : super(context) {
-//            this.myPalette = palette
-//        }
-//
-//
-//    }
-
 }
