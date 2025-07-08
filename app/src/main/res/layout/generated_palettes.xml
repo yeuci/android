@@ -10,8 +10,10 @@
         android:id="@+id/genBackButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Go back!"
-        android:backgroundTint="@color/gray"
-        android:translationY="685dp"/>
+        android:layout_marginTop="685dp"
+        android:layout_marginLeft="325dp"
+        android:text="Back"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/light_gray"/>
 
 </LinearLayout>

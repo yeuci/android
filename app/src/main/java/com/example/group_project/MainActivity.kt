@@ -15,8 +15,11 @@ import android.widget.Button
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.ads.AdView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,6 +28,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var uploadedButton : Button
 
     var db : Database = Database()
+    private lateinit var adView : AdView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +55,21 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             db.deleteAllPalettes()
         }
+
+        adView = AdView( this )
+        val adSize : AdSize = AdSize( AdSize.FULL_WIDTH, AdSize.AUTO_HEIGHT )
+        adView.setAdSize( adSize )
+        val adUnitId : String = "ca-app-pub-3940256099942544/6300978111"
+        adView.adUnitId = adUnitId
+        val builder : AdRequest.Builder = AdRequest.Builder( )
+        builder.addKeyword( "fitness" )
+        builder.addKeyword( "workout" ).addKeyword( "gym" )
+        val request : AdRequest = builder.build()
+
+        val adLayout :LinearLayout = findViewById( R.id.ad_view )
+        adLayout.addView( adView )
+
+        adView.loadAd( request )
     }
 
     fun generatePalettePage() {
