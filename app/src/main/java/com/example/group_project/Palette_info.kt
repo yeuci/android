@@ -69,7 +69,7 @@ class Palette_info : AppCompatActivity() {
             }
         }
 
-        Log.w("Gen", "Checking to see if right${palette}")
+//        Log.w("Gen", "Checking to see if right${palette}")
     }
 
     suspend fun uploadPaletteBtnClicked() {
@@ -133,6 +133,14 @@ class Palette_info : AppCompatActivity() {
     }
 
     fun addToFavoties() {
+        if (checkIfNameIsEmpty()) {
+            val text = "Please input a name!"
+            val duration = Toast.LENGTH_LONG
+
+            val toast = Toast.makeText(this, text, duration)
+            toast.show()
+            return
+        }
 
         if (!alreadyFavorited) {
 
@@ -149,8 +157,16 @@ class Palette_info : AppCompatActivity() {
     }
 
     fun sendEmail() {
+        if (checkIfNameIsEmpty()) {
+            val text = "Please input a name!"
+            val duration = Toast.LENGTH_LONG
 
-        val recipient : String = emailText.text.toString()
+            val toast = Toast.makeText(this, text, duration)
+            toast.show()
+            return
+        }
+
+        val recipient: String = emailText.text.toString()
         val subject = "Palette Hexcode"
         val body = palette.toString()
 
@@ -175,11 +191,6 @@ class Palette_info : AppCompatActivity() {
         } catch (e: Exception) {
 
         }
-//        if (intent.resolveActivity(packageManager) != null) {
-//            startActivity(intent)
-//            Log.w("Gen", "Sent $body")
-//            emailText.setText("")
-//        }
     }
 
 }

@@ -51,6 +51,28 @@ class Preferences private constructor(context: Context) {
         searchHistory = emptyArray()
     }
 
+    // Reset favorite list
+    fun resetFavoriteList() {
+        val pref: SharedPreferences = context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
+        var editor : SharedPreferences.Editor = pref.edit()
+        editor.putString( "FAVORITES", "")
+
+        editor.commit()
+
+        emptyFavoriteList()
+    }
+
+    // Reset search history
+    fun resetSaveHistory() {
+        val pref: SharedPreferences = context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
+        var editor : SharedPreferences.Editor = pref.edit()
+        editor.putString( "SEARCH_HISTORY", "")
+
+        editor.commit()
+
+        emptySaveHistory()
+    }
+
     // Add a palette to favorite list
     fun addPaletteToFavorites(palette: Palette) {
         favoriteList += palette
@@ -58,7 +80,16 @@ class Preferences private constructor(context: Context) {
 
     // Add a palette string search to search history
     fun addStringToSearchHistory(str: String) {
-        searchHistory += str
+
+        if (searchHistory.size < 3) {
+            searchHistory += str
+        }
+        else {
+            searchHistory = searchHistory.drop(1).toTypedArray()
+            searchHistory += str
+        }
+
+        Log.w("Gen", searchHistory.contentToString())
     }
 
     // Save the favorite list as a JSON string as persistent local data
