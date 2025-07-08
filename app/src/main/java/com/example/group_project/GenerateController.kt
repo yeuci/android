@@ -54,7 +54,7 @@ class GenerateController : AppCompatActivity() {
 
         // generate palettes
 //        var n : Int = numberOfPalettesInput.value.toInt()
-        var n : Int = numberOfPalettesInput.text.toString().toInt()
+        val n: Int = numberOfPalettesInput.text.toString().trim().toIntOrNull() ?: 1
         var input : String = colorInput.text.toString().trim()
         var colorStringArray = utils.paletteStringToColorStringArray(input)
         var couleurArray = utils.paletteStringArrayToCouleurArray(colorStringArray)
@@ -64,7 +64,7 @@ class GenerateController : AppCompatActivity() {
         Log.w("MainActivity", n.toString())
 
         //Save input to search history
-        var prefer =Preferences.getInstance()
+        var prefer = Preferences.getInstance()
         prefer.addStringToSearchHistory(input)
 
         var palettes = utils.generatePalettes(couleurArray, flags, n)
