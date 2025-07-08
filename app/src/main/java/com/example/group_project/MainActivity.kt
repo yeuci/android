@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.graphics.Color
+import android.provider.ContactsContract.Data
 import android.widget.Button
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -22,6 +23,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var generateButton : Button
     lateinit var favoritedButton : Button
     lateinit var uploadedButton : Button
+
+    var db : Database = Database()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,11 +43,13 @@ class MainActivity : AppCompatActivity() {
         favoritedButton = findViewById<Button>(R.id.favoritePaletteButton)
         uploadedButton = findViewById<Button>(R.id.uploadedPaletteButton)
 
-
         generateButton.setOnClickListener{ generatePalettePage() }
         favoritedButton.setOnClickListener{ favoritedPalettePage() }
         uploadedButton.setOnClickListener{ uploadedPalettePage() }
 
+        lifecycleScope.launch {
+            db.deleteAllPalettes()
+        }
     }
 
     fun generatePalettePage() {
@@ -58,12 +63,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun uploadedPalettePage() {
-        var intent : Intent = Intent(this, GenerateController::class.java)
+        var intent : Intent = Intent(this, Uploads::class.java)
         startActivity(intent)
     }
 
+
     companion object {
         lateinit var palettes : Array<Palette>
+
+        suspend fun uploadPaletteBtn(palette : Palette, name : String) {
+            var db : Database = Database()
+            db.uploadPalette(palette, name)
+        }
 
         //Local saving class
 

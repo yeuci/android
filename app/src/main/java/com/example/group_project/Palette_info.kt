@@ -9,11 +9,14 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.net.toUri
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class Palette_info : AppCompatActivity() {
     var palette : Palette = GeneratedPalettesController.chosenPalette
@@ -21,6 +24,9 @@ class Palette_info : AppCompatActivity() {
     lateinit var favoriteButton : Button
     lateinit var uploadButton : Button
     lateinit var emailButton : Button
+    lateinit var nameInput : EditText
+
+    lateinit var db : Database
 
     lateinit var emailText : EditText
 
@@ -43,6 +49,10 @@ class Palette_info : AppCompatActivity() {
         goBackButton = findViewById<Button>(R.id.backButton)
         favoriteButton = findViewById<Button>(R.id.favoriteButton)
         emailButton = findViewById<Button>(R.id.emailButton)
+        uploadButton = findViewById<Button>(R.id.uploadButton)
+        nameInput = findViewById<EditText>(R.id.nameEditText)
+
+        db = Database()
 
         //Go back
         goBackButton.setOnClickListener { finish() }
@@ -53,7 +63,35 @@ class Palette_info : AppCompatActivity() {
         emailText = findViewById<EditText>(R.id.emailEditText)
         emailButton.setOnClickListener { sendEmail() }
 
+        uploadButton.setOnClickListener {
+            lifecycleScope.launch {
+                uploadPaletteBtnClicked()
+            }
+        }
+
         Log.w("Gen", "Checking to see if right${palette}")
+    }
+
+    suspend fun uploadPaletteBtnClicked() {
+        if (checkIfNameIsEmpty()) {
+            val text = "Please input a name!"
+            val duration = Toast.LENGTH_LONG
+
+            val toast = Toast.makeText(this, text, duration)
+            toast.show()
+            return
+        }
+        palette.setPaletteName(nameInput.text.trim().toString())
+        MainActivity.uploadPaletteBtn(palette, nameInput.text.trim().toString())
+        val text = "Palette: ${nameInput.text.trim()} uploaded!"
+        val duration = Toast.LENGTH_LONG
+
+        val toast = Toast.makeText(this, text, duration)
+        toast.show()
+    }
+
+    fun checkIfNameIsEmpty() : Boolean {
+        return nameInput.text.trim().isEmpty()
     }
 
     fun displayPalette(palette: Palette) {
@@ -95,6 +133,7 @@ class Palette_info : AppCompatActivity() {
     }
 
     fun addToFavoties() {
+
         if (!alreadyFavorited) {
 
 

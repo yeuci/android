@@ -48,12 +48,27 @@ class Database {
         }
     }
 
-    suspend fun uploadPalette(palette: Palette): Boolean {
+    suspend fun uploadPalette(palette: Palette, name: String): Boolean {
         val paletteSave = PaletteSave(palette)
         return try {
             val docId = if (paletteSave.name.isNotBlank()) paletteSave.name else UUID.randomUUID().toString()
             Log.d("DB", "Uploading palette named '$docId' with colors: ${paletteSave.colors}")
             paletteCollection.document(docId).set(paletteSave).await()
+            Log.d("DB", "Upload successful")
+            true
+        } catch (e: Exception) {
+            Log.e("DB", "Upload failed", e)
+            false
+        }
+    }
+
+    suspend fun ratePalette(score : Int, palette_name : String): Boolean {
+        return try {
+            val docId = palette_name
+            val ratingSave : RatingSave = RatingSave(score, palette_name)
+            Log.d("DB", "Uploading rating named '$docId' with score: ${score}")
+            paletteCollection.document(docId).set(ratingSave).await()
+
             Log.d("DB", "Upload successful")
             true
         } catch (e: Exception) {

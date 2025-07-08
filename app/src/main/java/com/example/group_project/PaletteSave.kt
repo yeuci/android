@@ -14,4 +14,14 @@ class PaletteSave() {
         this.name = palette.getPaletteName()
         this.timestamp = System.currentTimeMillis()
     }
+
+    constructor(palette: Palette, name : String) : this() {
+        val couleurs = palette.getPalette()
+        for (couleur in couleurs) {
+            val color = couleur.getColor()
+            colors.add(color.toArgb())
+        }
+        this.name = palette.getPaletteName()
+        this.timestamp = System.currentTimeMillis()
+    }
 }
