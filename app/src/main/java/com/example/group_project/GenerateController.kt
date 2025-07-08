@@ -3,10 +3,16 @@ package com.example.group_project
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ListAdapter
+import android.widget.ListView
 import android.widget.NumberPicker
+import android.widget.SearchView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -22,8 +28,12 @@ class GenerateController : AppCompatActivity() {
     lateinit var numberOfPalettesInput : EditText
 
     //Go back button
-
     lateinit var goBackButton : Button
+
+    //View List and stuff needed to get search history working
+    lateinit var searchListView: ListView
+    var searchHist : Array<String> = emptyArray()
+    var searchList = emptyList<String>().toMutableList()
 
 
 
@@ -38,6 +48,7 @@ class GenerateController : AppCompatActivity() {
             insets
         }
 
+
         colorInput = findViewById(R.id.colorSearchView)
         generateButton = findViewById(R.id.generateButton)
         numberOfPalettesInput = findViewById(R.id.numberPicker)
@@ -45,8 +56,39 @@ class GenerateController : AppCompatActivity() {
         goBackButton = findViewById<Button>(R.id.searchBackButton)
         goBackButton.setOnClickListener { finish() }
 
+        searchListView = findViewById<ListView>(R.id.searchHistoryListView)
+
+
 
         generateButton.setOnClickListener{ generatePalette() }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        Preferences.getInstance().loadSearchHistory()
+        searchHist = Preferences.getInstance().getSearchHistory()
+        searchList = searchHist.toList().toMutableList()
+
+        var adapter = ArrayAdapter<String>(this,  R.layout.list_item_view, R.id.itemTextView, searchList)
+
+        searchListView.setAdapter(adapter)
+        var handler : itemInListClickHandler = itemInListClickHandler()
+        searchListView.onItemClickListener = handler
+
+    }
+
+    inner class itemInListClickHandler : AdapterView.OnItemClickListener {
+        override fun onItemClick(
+            parent: AdapterView<*>?,
+            view: View?,
+            position: Int,
+            id: Long
+        ) {
+            colorInput.setText(searchList.get(position).toString())
+            Log.w("Gen", "Testing position: $position and in list: ${searchList.get(position)}")
+        }
+
     }
 
     fun generatePalette() {
@@ -64,8 +106,11 @@ class GenerateController : AppCompatActivity() {
         Log.w("MainActivity", n.toString())
 
         //Save input to search history
-        var prefer = Preferences.getInstance()
-        prefer.addStringToSearchHistory(input)
+        if (!input.isEmpty()) {
+            var prefer = Preferences.getInstance()
+            prefer.addStringToSearchHistory(input)
+            prefer.saveSearchHistory()
+        }
 
         var palettes = utils.generatePalettes(couleurArray, flags, n)
 
@@ -75,4 +120,5 @@ class GenerateController : AppCompatActivity() {
         // change to generated palettes
         startActivity(intent)
     }
+
 }

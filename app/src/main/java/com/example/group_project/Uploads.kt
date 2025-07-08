@@ -3,6 +3,7 @@ package com.example.group_project
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +25,10 @@ class Uploads : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        var backButton : Button = findViewById<Button>(R.id.uploadBackButton)
+        backButton.setOnClickListener { finish() }
+
 
         lifecycleScope.launch {
             var paletteSaves : Array<PaletteSave> = db.getAllPalettes()
