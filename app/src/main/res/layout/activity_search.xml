@@ -42,7 +42,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="(i.e. red, green, blue or (255, 255, 255)"
+        android:text="(i.e. red, green, blue or (255, 255, 255))"
         android:textStyle="italic"
         android:layout_marginTop="265dp"
         android:textColor="@color/light_gray"/>
@@ -64,22 +64,21 @@
         android:textColor="@color/white"/>
 
     <EditText
-        android:inputType="numberDecimal"
         android:id="@+id/numberPicker"
-        android:layout_width="40dp"
+        android:layout_width="100dp"
         android:layout_height="80dp"
         android:layout_marginLeft="300dp"
         android:layout_marginTop="375dp"
-        android:textColor="@color/white"
         android:hint="1-10"
-    />
+        android:inputType="numberDecimal"
+        android:backgroundTint="@color/light_gray"
+        android:textColorHint="@color/light_gray" />
 
     <Button
         android:id="@+id/searchBackButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Go back!"
-
         android:layout_centerHorizontal="true"
         android:backgroundTint="@color/gray"
         android:layout_alignParentBottom="true"
