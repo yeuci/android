@@ -144,13 +144,18 @@ class Palette_info : AppCompatActivity() {
 
         if (!alreadyFavorited) {
 
-
             var prefer = Preferences.getInstance()
             prefer.loadFavoritePalette()
             palette.setPaletteName(emailText.text.toString())
             prefer.addPaletteToFavorites(palette)
             prefer.saveFavoriteList()
             alreadyFavorited = true
+
+            val text = "Palette: ${nameInput.text.trim()} favorited!"
+            val duration = Toast.LENGTH_LONG
+
+            val toast = Toast.makeText(this, text, duration)
+            toast.show()
 
             Log.w("Gen", "Added palette")
         }

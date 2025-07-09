@@ -54,6 +54,8 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             db.deleteAllPalettes()
+            Preferences.getInstance().resetSaveHistory()
+            Preferences.getInstance().resetFavoriteList()
         }
 
         adView = AdView( this )
@@ -61,10 +63,10 @@ class MainActivity : AppCompatActivity() {
         adView.setAdSize( adSize )
         val adUnitId : String = "ca-app-pub-3940256099942544/6300978111"
         adView.adUnitId = adUnitId
-        val builder : AdRequest.Builder = AdRequest.Builder( )
+        val builder : com.google.android.gms.ads.AdRequest.Builder = AdRequest.Builder( )
         builder.addKeyword( "fitness" )
         builder.addKeyword( "workout" ).addKeyword( "gym" )
-        val request : AdRequest = builder.build()
+        val request : com.google.android.gms.ads.AdRequest = builder.build()
 
         val adLayout :LinearLayout = findViewById( R.id.ad_view )
         adLayout.addView( adView )

@@ -6,17 +6,18 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ListAdapter
 import android.widget.ListView
-import android.widget.NumberPicker
-import android.widget.SearchView
+import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+
 
 class GenerateController : AppCompatActivity() {
     var utils : PaletteUtils = PaletteUtils()
@@ -29,6 +30,10 @@ class GenerateController : AppCompatActivity() {
 
     //Go back button
     lateinit var goBackButton : Button
+
+    lateinit var seek : SeekBar
+    lateinit var seekText : TextView
+
 
     //View List and stuff needed to get search history working
     lateinit var searchListView: ListView
@@ -51,16 +56,31 @@ class GenerateController : AppCompatActivity() {
 
         colorInput = findViewById(R.id.colorSearchView)
         generateButton = findViewById(R.id.generateButton)
-        numberOfPalettesInput = findViewById(R.id.numberPicker)
 
         goBackButton = findViewById<Button>(R.id.searchBackButton)
         goBackButton.setOnClickListener { finish() }
 
         searchListView = findViewById<ListView>(R.id.searchHistoryListView)
 
-
+        seek = findViewById<SeekBar>(R.id.seekbar)
+        seekText = findViewById(R.id.seekText)
 
         generateButton.setOnClickListener{ generatePalette() }
+
+        seek.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+            var progressChangedValue: Int = 0
+
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                progressChangedValue = progress
+                seekText.text = progressChangedValue.toString().trim()
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+            }
+        })
     }
 
     override fun onStart() {
@@ -96,7 +116,11 @@ class GenerateController : AppCompatActivity() {
 
         // generate palettes
 //        var n : Int = numberOfPalettesInput.value.toInt()
-        val n: Int = numberOfPalettesInput.text.toString().trim().toIntOrNull() ?: 1
+//        val n: Int = numberOfPalettesInput.text.toString().trim().toIntOrNull() ?: 1
+        var n : Int = seek.getProgress()
+        if (n <= 0) {
+            n += 1
+        }
         var input : String = colorInput.text.toString().trim()
         var colorStringArray = utils.paletteStringToColorStringArray(input)
         var couleurArray = utils.paletteStringArrayToCouleurArray(colorStringArray)
